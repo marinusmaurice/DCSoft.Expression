@@ -1,9 +1,9 @@
 ﻿/*
- 
-    都昌数值表达式引擎 DCSoft.Expression
 
- 南京都昌信息科技有限公司 2018年 版权所有 
- 公司网址 http://www.dcwriter.cn
+    DCSoft.Expression Numerical Expression Engine
+
+ Nanjing Duchang Information Technology Co., Ltd. 2018 All Rights Reserved
+ Company website: http://www.dcwriter.cn
 
  */
 using System;
@@ -13,7 +13,7 @@ using System.Text;
 namespace DCSoft.Expression
 {
     /// <summary>
-    /// 常量表达式元素。
+    /// Constant expression item.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible( false )]
     public class DCConstExpressionItem : DCExpressionItem
@@ -22,10 +22,10 @@ namespace DCSoft.Expression
         {
         }
         /// <summary>
-        /// 初始化对象
+        /// Initializes the object.
         /// </summary>
-        /// <param name="v">数值</param>
-        /// <param name="vt">数据类型</param>
+        /// <param name="v">The value.</param>
+        /// <param name="vt">The data type.</param>
         public DCConstExpressionItem(object v, DCValueType vt)
         {
             this._ValueType = vt;
@@ -44,7 +44,7 @@ namespace DCSoft.Expression
         }
         private string _StringValue = null;
         /// <summary>
-        /// 字符串数值
+        /// String value.
         /// </summary>
         public string StringValue
         {
@@ -60,7 +60,7 @@ namespace DCSoft.Expression
 
         private bool _BooleanValue = false;
         /// <summary>
-        /// 布尔值数值
+        /// Boolean value.
         /// </summary>
         public bool BooleanValue
         {
@@ -76,7 +76,7 @@ namespace DCSoft.Expression
 
         private double _NumberValue = 0;
         /// <summary>
-        /// 数字数值
+        /// Numeric value.
         /// </summary>
         public double NumberValue
         {
@@ -91,7 +91,7 @@ namespace DCSoft.Expression
         }
         private DCValueType _ValueType = DCValueType.String;
         /// <summary>
-        /// 数据类型
+        /// Data type.
         /// </summary>
         public DCValueType ValueType
         {
@@ -105,10 +105,10 @@ namespace DCSoft.Expression
             }
         }
         /// <summary>
-        /// 执行表达式
+        /// Evaluates the expression.
         /// </summary>
-        /// <param name="context">上下文对象</param>
-        /// <returns>执行结果</returns>
+        /// <param name="context">The context object.</param>
+        /// <returns>The evaluation result.</returns>
         public override object Eval(IDCExpressionContext context)
         {
             if (this.ValueType == DCValueType.String)
@@ -126,7 +126,7 @@ namespace DCSoft.Expression
             throw new NotSupportedException(this.ValueType.ToString());
         }
         /// <summary>
-        /// 调试输出文本
+        /// Outputs debug text.
         /// </summary>
         /// <param name="indentLevel"></param>
         /// <param name="str"></param>

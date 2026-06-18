@@ -1,9 +1,9 @@
 ﻿/*
- 
-    都昌数值表达式引擎 DCSoft.Expression
 
- 南京都昌信息科技有限公司 2018年 版权所有 
- 公司网址 http://www.dcwriter.cn
+    DCSoft.Expression Numerical Expression Engine
+
+ Nanjing Duchang Information Technology Co., Ltd. 2018 All Rights Reserved
+ Company website: http://www.dcwriter.cn
 
  */
 using System;
@@ -13,23 +13,23 @@ using System.Text;
 namespace DCSoft.Expression
 {
     /// <summary>
-    /// 表达式执行上下文对象
+    /// Expression execution context object.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible( false )]
     public interface IDCExpressionContext
     {
         /// <summary>
-        /// 执行函数
+        /// Executes a function.
         /// </summary>
-        /// <param name="name">函数名</param>
-        /// <param name="parameters">参数列表</param>
-        /// <returns>函数返回值</returns>
+        /// <param name="name">Function name.</param>
+        /// <param name="parameters">Parameter list.</param>
+        /// <returns>The function return value.</returns>
         object ExecuteFunction(string name, object[] parameters);
         /// <summary>
-        /// 获得变量值
+        /// Gets a variable value.
         /// </summary>
-        /// <param name="name">变量名</param>
-        /// <returns>变量值</returns>
+        /// <param name="name">Variable name.</param>
+        /// <returns>The variable value.</returns>
         object GetVariableValue(string name);
     }
 }

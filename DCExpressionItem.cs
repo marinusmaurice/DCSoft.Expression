@@ -1,9 +1,9 @@
 ﻿/*
- 
-    都昌数值表达式引擎 DCSoft.Expression
 
- 南京都昌信息科技有限公司 2018年 版权所有 
- 公司网址 http://www.dcwriter.cn
+    DCSoft.Expression Numerical Expression Engine
+
+ Nanjing Duchang Information Technology Co., Ltd. 2018 All Rights Reserved
+ Company website: http://www.dcwriter.cn
 
  */
 using System;
@@ -13,19 +13,19 @@ using System.Text;
 namespace DCSoft.Expression
 {
     /// <summary>
-    /// 抽象的表达式元素类型。所有的表达式元素都是从这个类型派生出来的。
+    /// Abstract expression item type. All expression items are derived from this type.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
     public abstract class DCExpressionItem
     {
         /// <summary>
-        /// 初始化对象
+        /// Initializes the object.
         /// </summary>
         public DCExpressionItem()
         {
         }
         /// <summary>
-        /// 执行表达式
+        /// Evaluates the expression.
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -36,7 +36,7 @@ namespace DCSoft.Expression
 
         private int _Priority = 0;
         /// <summary>
-        /// 运算优先级。数值越大则优先级越高。
+        /// Operator precedence. Higher value means higher precedence.
         /// </summary>
         internal int Priority
         {
@@ -52,7 +52,7 @@ namespace DCSoft.Expression
 
         private bool _Collapsed = false;
         /// <summary>
-        /// 已经收缩了的表达式
+        /// Expression already collapsed.
         /// </summary>
         internal bool Collapsed
         {
@@ -66,9 +66,9 @@ namespace DCSoft.Expression
             }
         }
         /// <summary>
-        /// 复制对象
+        /// Clones the object.
         /// </summary>
-        /// <returns>复制品</returns>
+        /// <returns>The clone.</returns>
         public virtual DCExpressionItem Clone()
         {
             throw new NotSupportedException("Clone()");

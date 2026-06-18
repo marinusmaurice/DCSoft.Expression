@@ -1,9 +1,9 @@
 ﻿/*
- 
-    都昌数值表达式引擎 DCSoft.Expression
 
- 南京都昌信息科技有限公司 2018年 版权所有 
- 公司网址 http://www.dcwriter.cn
+    DCSoft.Expression Numerical Expression Engine
+
+ Nanjing Duchang Information Technology Co., Ltd. 2018 All Rights Reserved
+ Company website: http://www.dcwriter.cn
 
  */
 using System;
@@ -13,7 +13,7 @@ using System.Text;
 namespace DCSoft.Expression
 {
     /// <summary>
-    /// 操作符元素
+    /// Operator expression item.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
     public class DCOperatorExpressionItem : DCExpressionItem
@@ -24,7 +24,7 @@ namespace DCSoft.Expression
 
         private string _Text = null;
         /// <summary>
-        /// 文本
+        /// Text.
         /// </summary>
         public string Text
         {
@@ -39,7 +39,7 @@ namespace DCSoft.Expression
         }
         private DCOperatorType _Operator = DCOperatorType.None;
         /// <summary>
-        /// 表达式类型
+        /// Operator type.
         /// </summary>
         public DCOperatorType Operator
         {
@@ -55,7 +55,7 @@ namespace DCSoft.Expression
 
         private DCExpressionItem _Left = null;
         /// <summary>
-        /// 左边的元素
+        /// Left element.
         /// </summary>
         public DCExpressionItem Left
         {
@@ -71,7 +71,7 @@ namespace DCSoft.Expression
 
         private DCExpressionItem _Right = null;
         /// <summary>
-        /// 右边的元素
+        /// Right element.
         /// </summary>
         public DCExpressionItem Rigth
         {
@@ -87,7 +87,7 @@ namespace DCSoft.Expression
 
         private bool _IsLogicExpression = false;
         /// <summary>
-        /// 是否为逻辑运算
+        /// Whether this is a logical operation.
         /// </summary>
         public bool IsLogicExpression
         {
@@ -102,7 +102,7 @@ namespace DCSoft.Expression
         }
 
         /// <summary>
-        /// 执行表达式
+        /// Evaluates the expression.
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -110,11 +110,11 @@ namespace DCSoft.Expression
         {
             switch (this.Operator)
             {
-                #region 逻辑运算
+                #region Logical operations
 
                 case DCOperatorType.And:
                     {
-                        //逻辑与
+                        //Logical AND
                         bool v1 = GetBooleanValue(this.Left, context, false);
                         if( v1 == false )
                         {
@@ -125,7 +125,7 @@ namespace DCSoft.Expression
                     }
                 case DCOperatorType.Or:
                     {
-                        //逻辑或
+                        //Logical OR
                         bool v1 = GetBooleanValue(this.Left, context, false);
                         if( v1 )
                         {
@@ -136,67 +136,67 @@ namespace DCSoft.Expression
                         //return v1 && v2;
                     }
                 #endregion
-                #region 数值比较
+                #region Numeric comparison
 
                 case DCOperatorType.Bigger:
                     {
-                        // 大于
+                        // Greater than
                         return GetEqualResult(context) > 0;
                     }
                 case DCOperatorType.BiggerOrEqual:
                     {
-                        // 大于等于
+                        // Greater than or equal
                         return GetEqualResult(context) >= 0;
                     }
                 case DCOperatorType.Equal:
                     {
-                        // 等于
+                        // Equal
                         return GetEqualResult(context) == 0;
                     }
                 case DCOperatorType.Less:
                     {
-                        // 大于等于
+                        // Less than
                         return GetEqualResult(context) < 0;
                     }
                 case DCOperatorType.LessOrEqual:
                     {
-                        // 大于等于
+                        // Less than or equal
                         return GetEqualResult(context) <= 0;
                     }
                 case DCOperatorType.Unequal:
                     {
-                        // 不等于
+                        // Not equal
                         return GetEqualResult(context) != 0;
                     }
 
                 #endregion
 
-                #region 数学运算 
+                #region Math operations
 
                 case DCOperatorType.Plus:
                     {
-                        // 加法
+                        // Addition
                         double v1 = GetDoubleValue(this.Left, context, 0);
                         double v2 = GetDoubleValue(this.Rigth, context, 0);
                         return v1 + v2;
                     }
                 case DCOperatorType.Minus:
                     {
-                        // 减法
+                        // Subtraction
                         double v1 = GetDoubleValue(this.Left, context, 0);
                         double v2 = GetDoubleValue(this.Rigth, context, 0);
                         return v1 - v2;
                     }
                 case DCOperatorType.Multi:
                     {
-                        // 乘法
+                        // Multiplication
                         double v1 = GetDoubleValue(this.Left, context, 0);
                         double v2 = GetDoubleValue(this.Rigth, context, 0);
                         return v1 * v2;
                     }
                 case DCOperatorType.Negative:
                     {
-                        // 负数
+                        // Negative number
                         double v1 = 0;
                         if (this.Rigth != null)
                         {
@@ -210,7 +210,7 @@ namespace DCSoft.Expression
                     }
                 case DCOperatorType.Division:
                     {
-                        // 除法
+                        // Division
                         double v1 = GetDoubleValue(this.Left, context, 0);
                         double v2 = GetDoubleValue(this.Rigth, context, 0);
                         if (v2 == 0)
@@ -224,7 +224,7 @@ namespace DCSoft.Expression
                     }
                 case DCOperatorType.Mod:
                     {
-                        // 求模
+                        // Modulo
                         double v1 = GetDoubleValue(this.Left, context, 0);
                         double v2 = GetDoubleValue(this.Rigth, context, 0);
                         if (v2 == 0)
@@ -245,7 +245,7 @@ namespace DCSoft.Expression
          }
 
         /// <summary>
-        /// 获得数值比较结果
+        /// Gets the comparison result.
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -259,14 +259,14 @@ namespace DCSoft.Expression
             }
             if ((v1 is int || v1 is double) && (v2 is int || v2 is double))
             {
-                // 明确进行数字比较
+                // Explicitly compare numbers
                 double d1 = Convert.ToDouble(v1);
                 double d2 = Convert.ToDouble(v2);
                 return d1.CompareTo(d2);
             }
             if (v1 is string && v2 is string)
             {
-                // 明确进行字符串比较
+                // Explicitly compare strings
                 return string.Compare((string)v1, (string)v2);
             }
 
@@ -286,15 +286,15 @@ namespace DCSoft.Expression
             {
                 try
                 {
-                    // 两个数据都不为空
+                    // Both values are non-null
                     var t1 = v1.GetType();
                     var t2 = v2.GetType();
                     if (t1 == t2)
                     {
-                        // 类型一致，则进行比较
+                        // Same type, compare directly
                         return System.Collections.Comparer.Default.Compare(v1, v2);
                     }
-                    // 类型不一样,则设置标准数据类型
+                    // Different types, use a common data type
                     var targetVT = (DCValueType)Math.Min((int)GetValueType(t1), (int)GetValueType(t2));
                     if (targetVT == DCValueType.Boolean)
                     {
@@ -380,7 +380,7 @@ namespace DCSoft.Expression
             }
             else
             {
-                throw new NotSupportedException("无法添加超过2个子项目。");
+                throw new NotSupportedException("Cannot add more than 2 sub-items.");
             }
         }
         public override DCExpressionItem Clone()
@@ -418,69 +418,69 @@ namespace DCSoft.Expression
     }
 
     /// <summary>
-    /// 操作符类型
+    /// Operator type.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
     public enum DCOperatorType
     {
         /// <summary>
-        /// 无效操作
+        /// Invalid operation.
         /// </summary>
         None,
         /// <summary>
-        /// 加法
+        /// Addition.
         /// </summary>
         Plus,
         /// <summary>
-        /// 减法
+        /// Subtraction.
         /// </summary>
         Minus,
         /// <summary>
-        /// 乘法
+        /// Multiplication.
         /// </summary>
         Multi,
         /// <summary>
-        /// 除法
+        /// Division.
         /// </summary>
         Division,
         /// <summary>
-        /// 求模
+        /// Modulo.
         /// </summary>
         Mod,
         /// <summary>
-        /// 逻辑与
+        /// Logical AND.
         /// </summary>
         And,
         /// <summary>
-        /// 逻辑或
+        /// Logical OR.
         /// </summary>
         Or,
         /// <summary>
-        /// 大于
+        /// Greater than.
         /// </summary>
         Bigger,
         /// <summary>
-        /// 大于等于
+        /// Greater than or equal.
         /// </summary>
         BiggerOrEqual,
         /// <summary>
-        /// 小于
+        /// Less than.
         /// </summary>
         Less ,
         /// <summary>
-        /// 小于等于
+        /// Less than or equal.
         /// </summary>
         LessOrEqual,
         /// <summary>
-        /// 等于
+        /// Equal.
         /// </summary>
         Equal,
         /// <summary>
-        /// 不等于
+        /// Not equal.
         /// </summary>
         Unequal,
         /// <summary>
-        /// 求负数
+        /// Negate.
         /// </summary>
         Negative
     }

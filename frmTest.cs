@@ -1,9 +1,9 @@
 ﻿/*
- 
-    都昌数值表达式引擎 DCSoft.Expression
 
- 南京都昌信息科技有限公司 2018年 版权所有 
- 公司网址 http://www.dcwriter.cn
+    DCSoft.Expression Numerical Expression Engine
+
+ Nanjing Duchang Information Technology Co., Ltd. 2018 All Rights Reserved
+ Company website: http://www.dcwriter.cn
 
  */
 using System;
@@ -18,7 +18,7 @@ using System.Reflection;
 namespace DCSoft.Expression
 {
     /// <summary>
-    /// 测试功能窗口
+    /// Test window.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
     public partial class frmTest : Form
@@ -26,7 +26,7 @@ namespace DCSoft.Expression
         static class Program
         {
             /// <summary>
-            /// 应用程序的主入口点。
+            /// The main entry point of the application.
             /// </summary>
             [STAThread]
             static void Main()
@@ -50,7 +50,7 @@ namespace DCSoft.Expression
             cboExpression.Items.Add("FIND('7048dcb034d94ce6bfd750c3f1672096',[zz])>=0");
             cboExpression.Items.Add("SUM(A1:B3)");
             cboExpression.Items.Add("[A1]-[B2]");
-            cboExpression.Items.Add("A+B+C+在三+是+213");
+            cboExpression.Items.Add("A+B+C+ZaiSan+Shi+213");
             cboExpression.Items.Add("A+B*(C+D*(E-F))-999");
             cboExpression.Items.Add("-A+B+C+D");
             cboExpression.Items.Add("A+B*C-D");
@@ -69,7 +69,7 @@ namespace DCSoft.Expression
             result.AppendLine(exp.ToDebugString());
             MyContext c = new MyContext();
             object vresult = exp.Eval(c);
-            result.AppendLine("运算结果:" + vresult);
+            result.AppendLine("Result: " + vresult);
             txtResult.Text = result.ToString();
         }
 
@@ -88,13 +88,13 @@ namespace DCSoft.Expression
                                     Convert.ToDouble(parameters[0]),
                                     Convert.ToDouble(parameters[1]));
                         default:
-                            MessageBox.Show("不支持的函数" + name);
+                            MessageBox.Show("Unsupported function: " + name);
                             return 0;
                     }
                 }
                 catch (System.Exception ext)
                 {
-                    MessageBox.Show("执行函数" + name + " 错误:" + ext.Message);
+                    MessageBox.Show("Error executing function " + name + ": " + ext.Message);
                     return 0;
                 }
             }
@@ -111,7 +111,7 @@ namespace DCSoft.Expression
                     case "E": return 123.5;
                     case "F": return 3.1415;
                     default:
-                        MessageBox.Show("不支持的参数名:" + name);
+                        MessageBox.Show("Unsupported variable name: " + name);
                         return 0;
                 }
             }

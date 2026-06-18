@@ -5,7 +5,7 @@
 //namespace DCSoft.Expression
 //{
 //    /// <summary>
-//    /// 尚未实现
+//    /// Not yet implemented
 //    /// </summary>
 //    [System.Runtime.InteropServices.ComVisible(false)]
 //    public class DCThreeExpressionItem : DCExpressionItem

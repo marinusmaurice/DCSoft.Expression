@@ -1,9 +1,9 @@
 ﻿/*
- 
-    都昌数值表达式引擎 DCSoft.Expression
 
- 南京都昌信息科技有限公司 2018年 版权所有 
- 公司网址 http://www.dcwriter.cn
+    DCSoft.Expression Numerical Expression Engine
+
+ Nanjing Duchang Information Technology Co., Ltd. 2018 All Rights Reserved
+ Company website: http://www.dcwriter.cn
 
  */
 using System;
@@ -13,7 +13,7 @@ using System.Text;
 namespace DCSoft.Expression
 {
     /// <summary>
-    /// 表达式元素组。
+    /// Expression item group.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
     public class DCGroupExpressionItem : DCExpressionItem
@@ -25,7 +25,7 @@ namespace DCSoft.Expression
 
         private DCExpressoinItemList _Items = new DCExpressoinItemList();
         /// <summary>
-        /// 子项目列表
+        /// Sub-item list.
         /// </summary>
         public DCExpressoinItemList Items
         {
@@ -39,7 +39,7 @@ namespace DCSoft.Expression
             }
         }
         /// <summary>
-        /// 执行表达式
+        /// Evaluates the expression.
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>

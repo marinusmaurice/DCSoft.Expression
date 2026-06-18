@@ -1,9 +1,9 @@
 ﻿/*
- 
-    都昌数值表达式引擎 DCSoft.Expression
 
- 南京都昌信息科技有限公司 2018年 版权所有 
- 公司网址 http://www.dcwriter.cn
+    DCSoft.Expression Numerical Expression Engine
+
+ Nanjing Duchang Information Technology Co., Ltd. 2018 All Rights Reserved
+ Company website: http://www.dcwriter.cn
 
  */
 using System;
@@ -13,13 +13,13 @@ using System.Text;
 namespace DCSoft.Expression
 {
     /// <summary>
-    /// 变量元素
+    /// Variable expression item.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible( false )]
     public class DCVariableExpressionItem : DCExpressionItem
     {
         /// <summary>
-        /// 初始化对象
+        /// Initializes the object.
         /// </summary>
         public DCVariableExpressionItem()
         {
@@ -27,7 +27,7 @@ namespace DCSoft.Expression
 
         private string _Name = null;
         /// <summary>
-        /// 名称
+        /// Name.
         /// </summary>
         public string Name
         {
@@ -42,28 +42,28 @@ namespace DCSoft.Expression
         }
 
         /// <summary>
-        /// 执行表达式，根据上下文获取变量值
+        /// Evaluates the expression and retrieves the variable value from the context.
         /// </summary>
-        /// <param name="context">上下文对象</param>
-        /// <returns>变量值</returns>
+        /// <param name="context">The context object.</param>
+        /// <returns>The variable value.</returns>
         public override object Eval(IDCExpressionContext context)
         {
             return context.GetVariableValue(this.Name);
         }
         /// <summary>
-        /// 输出调试用字符串
+        /// Outputs a debug string.
         /// </summary>
-        /// <param name="indentLevel">层次</param>
-        /// <param name="str">字符串对象</param>
+        /// <param name="indentLevel">Indent level.</param>
+        /// <param name="str">String builder.</param>
         public override void ToDebugString(int indentLevel, StringBuilder str)
         {
             str.AppendLine(new string(' ', indentLevel * 3) + "VAR:" + this.Name);
         }
 
         /// <summary>
-        /// 返回表示对象的字符串
+        /// Returns a string representation of the object.
         /// </summary>
-        /// <returns>字符串</returns>
+        /// <returns>The string.</returns>
         public override string ToString()
         {
             return "VAR:" + this.Name;

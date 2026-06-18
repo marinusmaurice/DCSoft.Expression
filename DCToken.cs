@@ -1,9 +1,9 @@
 ﻿/*
- 
-    都昌数值表达式引擎 DCSoft.Expression
 
- 南京都昌信息科技有限公司 2018年 版权所有 
- 公司网址 http://www.dcwriter.cn
+    DCSoft.Expression Numerical Expression Engine
+
+ Nanjing Duchang Information Technology Co., Ltd. 2018 All Rights Reserved
+ Company website: http://www.dcwriter.cn
 
  */
 using System;
@@ -13,7 +13,7 @@ using System.Text;
 namespace DCSoft.Expression
 {
     /// <summary>
-    /// 符号对象
+    /// Token object.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
     internal class DCToken
@@ -58,7 +58,7 @@ namespace DCSoft.Expression
     }
 
     /// <summary>
-    /// 符号对象列表
+    /// Token list.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
     internal class DCTokenList : List<DCToken>
@@ -106,7 +106,7 @@ namespace DCSoft.Expression
         }
 
         /// <summary>
-        /// 获得所有操作符字符串
+        /// Parses the expression text into tokens.
         /// </summary>
         /// <returns></returns>
         public void Parse(string text)
@@ -125,16 +125,16 @@ namespace DCSoft.Expression
                 char c = text[position];
                 if (sm == StringMode.SingleQuotes || sm == StringMode.DoubleQuotes)
                 {
-                    // 正在定义字符串
+                    // Inside a string definition
                     if (c == '\\')
                     {
-                        // 开始转义
+                        // Start of escape sequence
                         const string EigthDigs = "01234567";
                         const string HexDigs = "0123456789ABCDEF";
                         char nextC = NextChar(text, position);
                         if (EigthDigs.IndexOf(nextC) >= 0)
                         {
-                            // 三位八进制数字
+                            // Three-digit octal number
                             string v = NextChars(text, position, 3);
                             if (v != null && v.Length == 3)
                             {
@@ -144,12 +144,12 @@ namespace DCSoft.Expression
                             }
                             else
                             {
-                                throw new System.Exception("长度不够:" + text);
+                                throw new System.Exception("Insufficient length: " + text);
                             }
                         }
                         else if (nextC == 'x')
                         {
-                            // 两个十六进制
+                            // Two hex digits
                             position++;
                             string v = NextChars(text, position, 2);
                             if (v != null && v.Length == 2)
@@ -159,12 +159,12 @@ namespace DCSoft.Expression
                                 int num = ParseNumber(v, HexDigs);
                                 currentToken._Str.Append((char)num);
                             }
-                            else
-                            {
-                                throw new System.Exception("长度不够:" + text);
+                                 else
+                                {
+                                    throw new System.Exception("Insufficient length: " + text);
+                                }
                             }
-                        }
-                        else if (nextC == 'a')
+                            else if (nextC == 'a')
                         {
                             currentToken._Str.Append('\a');
                         }
@@ -194,35 +194,35 @@ namespace DCSoft.Expression
                         }
                         else
                         {
-                            throw new System.Exception("不支持的转移:" + nextC);
+                            throw new System.Exception("Unsupported escape: " + nextC);
                         }
                     }
                     else if (sm == StringMode.SingleQuotes && c == '\'')
                     {
-                        // 结束定义单引号字符串
+                        // End single-quoted string definition
                         currentToken._Str.Append(c);
                         currentToken = null;
                         sm = StringMode.None;
                     }
                     else if (sm == StringMode.DoubleQuotes && c == '"')
                     {
-                        // 结束定义双引号字符串
+                        // End double-quoted string definition
                         currentToken._Str.Append(c);
                         currentToken = null;
                         sm = StringMode.None;
                     }
                     else
                     {
-                        // 添加正常字符
+                        // Add normal character
                         currentToken._Str.Append(c);
                     }
                 }
                 else
                 {
-                    // 不是正在定义字符串
+                    // Not inside a string definition
                     if (c == '\'')
                     {
-                        // 开始定义单引号字符串
+                        // Start single-quoted string definition
                         currentToken = new DCToken();
                         currentToken.Type = CharType.StringConst;
                         currentToken._Str.Append(c);
@@ -231,7 +231,7 @@ namespace DCSoft.Expression
                     }
                     else if (c == '"')
                     {
-                        // 开始定义双引号字符串
+                        // Start double-quoted string definition
                         currentToken = new DCToken();
                         currentToken.Type = CharType.StringConst;
                         currentToken._Str.Append(c);
@@ -240,7 +240,7 @@ namespace DCSoft.Expression
                     }
                     else if (char.IsWhiteSpace(c))
                     {
-                        // 遇到空白字符则过滤掉空白字符
+                        // Skip whitespace characters
                         currentToken = null;
                         for (; position < text.Length; position++)
                         {
@@ -253,7 +253,7 @@ namespace DCSoft.Expression
                     }
                     else
                     {
-                        // 普通字符
+                        // Regular character
                         if (c == '(')
                         {
                             currentToken = new DCToken();
@@ -303,11 +303,11 @@ namespace DCSoft.Expression
         }
 
         /// <summary>
-        /// 文本转换为数字
+        /// Converts text to a number.
         /// </summary>
-        /// <param name="txt">文本</param>
-        /// <param name="digs">数字字符</param>
-        /// <returns>转换后的数字</returns>
+        /// <param name="txt">The text.</param>
+        /// <param name="digs">Digit characters.</param>
+        /// <returns>The converted number.</returns>
         private int ParseNumber(string txt, string digs)
         {
             int v = 0;
@@ -323,7 +323,7 @@ namespace DCSoft.Expression
             return v;
         }
         /// <summary>
-        /// 获得下一个字符
+        /// Gets the next character.
         /// </summary>
         /// <returns></returns>
         private char NextChar(string text, int position)
@@ -347,11 +347,11 @@ namespace DCSoft.Expression
 
 
         /// <summary>
-        /// 获得字符类型
+        /// Gets the character type.
         /// </summary>
-        /// <param name="c">字符</param>
-        /// <param name="isVB">是否为ＶＢ语法</param>
-        /// <returns>字符类型</returns>
+        /// <param name="c">The character.</param>
+        /// <param name="isVB">Whether it is VB syntax.</param>
+        /// <returns>The character type.</returns>
         private CharType GetChartType(char c)
         {
             if (c == '$')
@@ -367,7 +367,7 @@ namespace DCSoft.Expression
             {
                 return CharType.CurRight;
             }
-            // 为了保持兼容性，不支持方括号。
+            // For compatibility, square brackets are not supported.
             //if (c == '[')
             //{
             //    return CharType.SquLeft;
@@ -415,15 +415,15 @@ namespace DCSoft.Expression
     internal enum StringMode
     {
         /// <summary>
-        /// 无
+        /// None.
         /// </summary>
         None,
         /// <summary>
-        /// 单引号字符串
+        /// Single-quoted string.
         /// </summary>
         SingleQuotes,
         /// <summary>
-        /// 多引号字符串
+        /// Double-quoted string.
         /// </summary>
         DoubleQuotes
     }
@@ -432,43 +432,43 @@ namespace DCSoft.Expression
     {
         None,
         /// <summary>
-        /// 标识符
+        /// Identifier.
         /// </summary>
         Symbol,
         /// <summary>
-        /// 数学运算符
+        /// Math operator.
         /// </summary>
         MathOperator,
         /// <summary>
-        /// 逻辑运算符
+        /// Logic operator.
         /// </summary>
         LogicOperator,
         /// <summary>
-        /// 左边的圆括号
+        /// Left parenthesis.
         /// </summary>
         CurLeft,
         /// <summary>
-        /// 右边的圆括号
+        /// Right parenthesis.
         /// </summary>
         CurRight,
         /// <summary>
-        /// 左边的方括号
+        /// Left square bracket.
         /// </summary>
         SquLeft,
         /// <summary>
-        /// 右边的方括号
+        /// Right square bracket.
         /// </summary>
         SquRight,
         /// <summary>
-        /// 空白字符
+        /// Whitespace.
         /// </summary>
         Whitespace,
         /// <summary>
-        /// 分隔字符
+        /// Separator.
         /// </summary>
         Spliter,
         /// <summary>
-        /// 字符串
+        /// String constant.
         /// </summary>
         StringConst
     }

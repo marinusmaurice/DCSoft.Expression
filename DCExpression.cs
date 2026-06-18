@@ -1,9 +1,9 @@
 ﻿/*
- 
-    都昌数值表达式引擎 DCSoft.Expression
 
- 南京都昌信息科技有限公司 2018年 版权所有 
- 公司网址 http://www.dcwriter.cn
+    DCSoft.Expression Numerical Expression Engine
+
+ Nanjing Duchang Information Technology Co., Ltd. 2018 All Rights Reserved
+ Company website: http://www.dcwriter.cn
 
  */
 using System;
@@ -13,7 +13,7 @@ using System.Text;
 namespace DCSoft.Expression
 {
     /// <summary>
-    /// 表达式对象，为顶级API类型。
+    /// Expression object; the top-level API type.
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
     public class DCExpression
@@ -21,10 +21,10 @@ namespace DCSoft.Expression
         //private static Dictionary<string, DCExpression> _Instances 
         //    = new Dictionary<string, DCExpression>();
         ///// <summary>
-        ///// 使用缓存的创建对象
+        ///// Creates an object using the cache.
         ///// </summary>
-        ///// <param name="text">表达式文本</param>
-        ///// <returns>创建的对象</returns>
+        ///// <param name="text">Expression text</param>
+        ///// <returns>The created object</returns>
         //public static DCExpression CreateUseBuffer(string text)
         //{
         //    if (text == null || text.Length == 0)
@@ -40,7 +40,7 @@ namespace DCSoft.Expression
         //    return exp;
         //}
         ///// <summary>
-        ///// 清空内部的缓存区
+        ///// Clears the internal cache.
         ///// </summary>
         //public static void ClearBuffer()
         //{
@@ -48,15 +48,15 @@ namespace DCSoft.Expression
         //}
 
         /// <summary>
-        /// 初始化对象
+        /// Initializes the object.
         /// </summary>
         public DCExpression()
         {
         }
         /// <summary>
-        /// 初始化对象
+        /// Initializes the object.
         /// </summary>
-        /// <param name="txt">表达式文本</param>
+        /// <param name="txt">Expression text</param>
         public DCExpression(string txt)
         {
             this.Parse(txt);
@@ -64,7 +64,7 @@ namespace DCSoft.Expression
 
         private string _Text = null;
         /// <summary>
-        /// 表达式原始文本
+        /// Raw expression text.
         /// </summary>
         public string Text
         {
@@ -76,7 +76,7 @@ namespace DCSoft.Expression
 
         private DCExpressionItem _RootItem = null;
         /// <summary>
-        /// 根表达式元素对象
+        /// Root expression item.
         /// </summary>
         public DCExpressionItem RootItem
         {
@@ -86,10 +86,10 @@ namespace DCSoft.Expression
             }
         }
         /// <summary>
-        /// 执行表达式
+        /// Evaluates the expression.
         /// </summary>
-        /// <param name="context">上下文对象</param>
-        /// <returns>运算结果</returns>
+        /// <param name="context">The context object.</param>
+        /// <returns>The evaluation result.</returns>
         public object Eval(IDCExpressionContext context)
         {
             if (context == null)
@@ -116,7 +116,7 @@ namespace DCSoft.Expression
             return result;
         }
         /// <summary>
-        /// 转换为调试用的文本
+        /// Converts to debug text.
         /// </summary>
         /// <returns></returns>
         public string ToDebugString()
@@ -132,7 +132,7 @@ namespace DCSoft.Expression
             return str.ToString();
         }
         /// <summary>
-        /// 解析表达式
+        /// Parses the expression.
         /// </summary>
         /// <param name="text"></param>
         public void Parse(string text)
@@ -143,7 +143,7 @@ namespace DCSoft.Expression
             ParseItem(this._RootItem, tokens);
         }
         /// <summary>
-        /// 解析表达式项目
+        /// Parses expression items.
         /// </summary>
         /// <param name="rootItem"></param>
         /// <param name="tokens"></param>
@@ -156,7 +156,7 @@ namespace DCSoft.Expression
                 DCToken token = tokens.Current;
                 if (token.Type == CharType.Symbol)
                 {
-                    // 根据关键字 And Or 进行修复。
+                    // Fix based on keywords And Or.
                     if (string.Equals(token.Text, "And", StringComparison.CurrentCultureIgnoreCase))
                     {
                         token.Type = CharType.MathOperator;
@@ -170,11 +170,11 @@ namespace DCSoft.Expression
                 }
                 if (token.Type == CharType.Symbol)
                 {
-                    // 标识符
+                    // Identifier
                     DCToken next = tokens.NextItem;
                     if (next != null && next.Type == CharType.CurLeft)
                     {
-                        // 函数调用
+                        // Function call
                         tokens.MoveNext();
                         DCFunctionExpressionItem func = new DCFunctionExpressionItem();
                         func.Name = token.Text;
@@ -186,12 +186,12 @@ namespace DCSoft.Expression
                     {
                         if (string.Compare(token.Text, "true", true) == 0)
                         {
-                            // 布尔值常量
+                            // Boolean constant
                             newItem = new DCConstExpressionItem(true, DCValueType.Boolean);
                         }
                         else if (string.Compare(token.Text, "false", true) == 0)
                         {
-                            // 布尔值常量
+                            // Boolean constant
                             newItem = new DCConstExpressionItem(false, DCValueType.Boolean);
                         }
                         else
@@ -199,12 +199,12 @@ namespace DCSoft.Expression
                             double dbl = 0;
                             if (double.TryParse(token.Text, out dbl))
                             {
-                                // 数字常量
+                                // Numeric constant
                                 newItem = new DCConstExpressionItem(dbl, DCValueType.Number);
                             }
                             else
                             {
-                                // 引用的变量
+                                // Referenced variable
                                 DCVariableExpressionItem var = new DCVariableExpressionItem();
                                 var.Name = token.Text;
                                 newItem = var;
@@ -215,7 +215,7 @@ namespace DCSoft.Expression
                 }
                 else if (token.Type == CharType.StringConst)
                 {
-                    // 字符串常量
+                    // String constant
                     var strV = token.Text;
                     if (strV != null && strV.Length >= 2)
                     {
@@ -228,7 +228,7 @@ namespace DCSoft.Expression
                 }
                 else if (token.Type == CharType.CurLeft)
                 {
-                    // 左圆括号，则进行分组
+                    // Left parenthesis, perform grouping
                     DCGroupExpressionItem group = new DCGroupExpressionItem();
                     newItem = group;
                     newItem.Priority = 0;
@@ -237,10 +237,10 @@ namespace DCSoft.Expression
                 else if (token.Type == CharType.Spliter
                     || token.Type == CharType.CurRight)
                 {
-                    // 分隔符号或者右圆括号则退出分组
+                    // Separator or right parenthesis, exit grouping
                     if (items == null || items.Count == 0)
                     {
-                        throw new System.Exception("项目分组无效:" + this.Text);
+                        throw new System.Exception("Invalid item group: " + this.Text);
                     }
                     if (items != null && items.Count > 0)
                     {
@@ -250,7 +250,7 @@ namespace DCSoft.Expression
                     items = new List<DCExpressionItem>();
                     if (token.Type == CharType.CurRight)
                     {
-                        //退出分组
+                        //Exit grouping
                         break;
                     }
                     else
@@ -261,7 +261,7 @@ namespace DCSoft.Expression
                 else if (token.Type == CharType.MathOperator
                     || token.Type == CharType.LogicOperator)
                 {
-                    // 操作符号
+                    // Operator
 
                     DCOperatorExpressionItem math = new DCOperatorExpressionItem();
                     math.Text = token.Text;
@@ -333,7 +333,7 @@ namespace DCSoft.Expression
                             math.IsLogicExpression = true;
                             break;
                         default:
-                            throw new NotSupportedException("无效操作符:" + token.Text);
+                            throw new NotSupportedException("Invalid operator: " + token.Text);
                     }
                     newItem = math;
                 }
@@ -351,7 +351,7 @@ namespace DCSoft.Expression
         }
 
         /// <summary>
-        /// 表达式元素列表的收缩
+        /// Collapses the expression item list.
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
@@ -365,7 +365,7 @@ namespace DCSoft.Expression
             {
                 return null;
             }
-            // 特别处理减法操作
+            // Special handling of subtraction
             for (int iCount = 0; iCount < items.Count; iCount++)
             {
                 if (items[iCount] is DCOperatorExpressionItem && iCount < items.Count - 1)
@@ -376,7 +376,7 @@ namespace DCSoft.Expression
                         bool isNegative = false;
                         if (iCount == 0)
                         {
-                            //  处于第一的位置，必然是负数操作。
+                            //  At the first position, must be a negation operation.
                             isNegative = true;
                         }
                         else
@@ -387,19 +387,19 @@ namespace DCSoft.Expression
                                 DCOperatorExpressionItem preOper = (DCOperatorExpressionItem)preItem;
                                 if (preOper.IsLogicExpression)
                                 {
-                                    // 前面的元素是逻辑判断元素，是负数操作。
+                                    // The preceding element is a logic expression, it is a negation operation.
                                     isNegative = true;
                                 }
                             }
                             else if (preItem is DCGroupExpressionItem)
                             {
-                                // 前面的是表达式组元素，为负数操作。
+                                // The preceding is a group expression item, it is a negation operation.
                                 isNegative = true;
                             }
                         }
                         if (isNegative)
                         {
-                            // 将减法转换为负数运算
+                            // Convert subtraction to negation
                             item.Operator = DCOperatorType.Negative;
                             item.Rigth = items[iCount + 1];
                             items.RemoveAt(iCount + 1);
@@ -410,14 +410,14 @@ namespace DCSoft.Expression
                     }//if
                 }//if
             }//for
-            // 此处进行多次循环，每次循环将优先级最高的操作符元素提升层次。
-            // 一般来说到最后只剩下一个操作符元素。
+            // Multiple iterations here, each promotes the highest-priority operator item.
+            // Generally only one operator item remains at the end.
             while (items.Count > 1)
             {
                 DCOperatorExpressionItem maxPriorityItem = null;
                 int maxIndex = -1;
                 int len = items.Count;
-                // 首先找到优先级最高的操作符。
+                // Find the operator with the highest priority.
                 for (int iCount = 0; iCount < len; iCount++)
                 {
                     DCExpressionItem item = items[iCount];
@@ -432,19 +432,19 @@ namespace DCSoft.Expression
                 }//for
                 if (maxPriorityItem == null)
                 {
-                    // 没找到要操作的运算符，则退出循环.
+                    // No operator found, exit loop.
                     break;
                 }
 
                 if (maxIndex < items.Count - 1)
                 {
-                    // 吞并右边的项目
+                    // Absorb the right item
                     maxPriorityItem.Rigth = items[maxIndex + 1];
                     items.RemoveAt(maxIndex + 1);
                 }
                 if (maxIndex > 0)
                 {
-                    // 吞并左边的项目
+                    // Absorb the left item
                     maxPriorityItem.Left = items[maxIndex - 1];
                     items.RemoveAt(maxIndex - 1);
                 }
@@ -452,10 +452,10 @@ namespace DCSoft.Expression
                 //    && maxPriorityItem.Left == null
                 //    && maxPriorityItem.Rigth != null)
                 //{
-                //    // 将减法操作转换为负数操作
+                //    // Convert subtraction to negation
                 //    maxPriorityItem.Operator = DCOperatorType.Negative;
                 //}
-                // 设置运算符已经被处理过了。
+                // Mark operator as already processed.
                 maxPriorityItem.Collapsed = true;
             }//while
             if (items.Count > 0)
@@ -466,9 +466,9 @@ namespace DCSoft.Expression
         }
 
         /// <summary>
-        /// 复制对象
+        /// Clones the object.
         /// </summary>
-        /// <returns>复制品</returns>
+        /// <returns>The clone.</returns>
         public DCExpression Clone()
         {
             DCExpression result = (DCExpression)this.MemberwiseClone();
@@ -556,11 +556,11 @@ namespace DCSoft.Expression
         }
 
         /// <summary>
-        /// 表示非数字的数值
+        /// Represents a non-numeric value.
         /// </summary>
         internal const int NaN = 2147439148;
         /// <summary>
-        /// 将对象转换为字符串值
+        /// Converts an object to a string.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -589,7 +589,7 @@ namespace DCSoft.Expression
             return Convert.ToString(obj);
         }
         /// <summary>
-        /// 将对象转换为浮点数
+        /// Converts an object to a double.
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="defaultValue"></param>
